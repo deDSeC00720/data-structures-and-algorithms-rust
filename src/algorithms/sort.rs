@@ -1,4 +1,4 @@
-pub fn selection_sort<T: PartialOrd>(vec: &mut Vec<T>) {
+pub fn selection_sort<T: PartialOrd>(vec: &mut [T]) {
     for i in 0..vec.len() - 1 {
         let mut min_index = i;
         for j in i + 1..vec.len() {
@@ -10,7 +10,7 @@ pub fn selection_sort<T: PartialOrd>(vec: &mut Vec<T>) {
     }
 }
 
-pub fn bubble_sort<T: PartialOrd>(vec: &mut Vec<T>) {
+pub fn bubble_sort<T: PartialOrd>(vec: &mut [T]) {
     for _ in 0..vec.len() - 1 {
         for j in 0..vec.len() - 1 {
             if vec[j] > vec[j + 1] {
@@ -20,7 +20,7 @@ pub fn bubble_sort<T: PartialOrd>(vec: &mut Vec<T>) {
     }
 }
 
-pub fn insertion_sort<T: PartialOrd + Copy>(vec: &mut Vec<T>) {
+pub fn insertion_sort<T: PartialOrd + Copy>(vec: &mut [T]) {
     for i in 1..vec.len() {
         let temp = vec[i];
         let mut j = i;
@@ -30,4 +30,49 @@ pub fn insertion_sort<T: PartialOrd + Copy>(vec: &mut Vec<T>) {
         }
         vec[j] = temp;
     }
+}
+
+fn merge<T: PartialOrd + Copy>(vec: &mut [T]) {
+    let mid = vec.len() / 2;
+    let left = vec[..mid].to_vec();
+    let right = vec[mid..].to_vec();
+
+    let mut i = 0;
+    let mut j = 0;
+    let mut k = 0;
+
+    while i < mid && j < right.len() {
+        if left[i] <= right[j] {
+            vec[k] = left[i];
+            i += 1;
+        } else {
+            vec[k] = right[j];
+            j += 1;
+        }
+        k += 1;
+    }
+
+    while i < mid {
+        vec[k] = left[i];
+        i += 1;
+        k += 1;
+    }
+
+    while j < right.len() {
+        vec[k] = right[j];
+        j += 1;
+        k += 1;
+    }
+}
+
+pub fn merge_sort<T: PartialOrd + Copy>(vec: &mut [T]) {
+    if vec.len() <= 1 {
+        return;
+    }
+
+    let mid = vec.len() / 2;
+    merge_sort(&mut vec[..mid]);
+    merge_sort(&mut vec[mid..]);
+
+    merge(vec);
 }
