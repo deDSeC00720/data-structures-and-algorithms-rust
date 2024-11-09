@@ -76,3 +76,44 @@ pub fn merge_sort<T: PartialOrd + Copy>(vec: &mut [T]) {
 
     merge(vec);
 }
+
+fn partition<T: PartialOrd>(vec: &mut [T]) -> usize {
+    let mut pivot = 0;
+
+    for i in 1..vec.len() {
+        if vec[i] < vec[0] {
+            pivot += 1
+        }
+    }
+
+    vec.swap(0, pivot);
+
+    let mut i = 0;
+    let mut j = vec.len() - 1;
+
+    while i < pivot && j > pivot {
+        if vec[i] < vec[pivot] {
+            i += 1;
+            continue;
+        }
+        if vec[j] >= vec[pivot] {
+            j -= 1;
+            continue;
+        }
+        vec.swap(i, j);
+        i += 1;
+        j -= 1;
+    }
+
+    pivot
+}
+
+pub fn quick_sort<T: PartialOrd>(vec: &mut [T]) {
+    if vec.len() <= 1 {
+        return;
+    }
+    let pivot = partition(vec);
+
+    quick_sort(&mut vec[..pivot]);
+    quick_sort(&mut vec[(pivot + 1)..]);
+}
