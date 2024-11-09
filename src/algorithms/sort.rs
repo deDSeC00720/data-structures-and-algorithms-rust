@@ -117,3 +117,44 @@ pub fn quick_sort<T: PartialOrd>(vec: &mut [T]) {
     quick_sort(&mut vec[..pivot]);
     quick_sort(&mut vec[(pivot + 1)..]);
 }
+
+pub fn heap_sort<T: PartialOrd>(vec: &mut [T]) {
+    for i in 1..vec.len() {
+        let mut child_index = i;
+        let mut parent_index = (i - 1) / 2;
+
+        while vec[parent_index] < vec[child_index] {
+            vec.swap(parent_index, child_index);
+            child_index = parent_index;
+            if child_index == 0 {
+                break;
+            }
+            parent_index = (child_index - 1) / 2;
+        }
+    }
+
+    let mut size = vec.len();
+
+    while size > 1 {
+        vec.swap(0, size - 1);
+
+        size -= 1;
+
+        let mut parent_index = 0;
+        let mut left_child = 1;
+        let mut right_child = 2;
+
+        while right_child < size && (vec[parent_index] < vec[left_child] || vec[parent_index] < vec[right_child]) {
+            let swap_index = if vec[left_child] > vec[right_child] { left_child } else { right_child };
+            vec.swap(parent_index, swap_index);
+
+            parent_index = swap_index;
+            left_child = 2 * parent_index + 1;
+            right_child = left_child + 1;
+        }
+
+        if left_child < size && vec[parent_index] < vec[left_child] {
+            vec.swap(parent_index, left_child);
+        }
+    }
+}
