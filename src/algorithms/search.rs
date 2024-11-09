@@ -1,4 +1,4 @@
-pub fn linear_search<T: PartialEq>(vec: &Vec<T>, target: T) -> Option<usize> {
+pub fn linear_search<T: PartialEq>(vec: &[T], target: T) -> Option<usize> {
     for (i, element) in vec.iter().enumerate() {
         if *element == target {
             return Some(i);
@@ -7,7 +7,7 @@ pub fn linear_search<T: PartialEq>(vec: &Vec<T>, target: T) -> Option<usize> {
     None
 }
 
-pub fn binary_search<T: PartialEq + PartialOrd>(vec: &Vec<T>, target: T) -> Option<usize> {
+pub fn binary_search<T: PartialOrd>(vec: &[T], target: T) -> Option<usize> {
     let mut start = 0;
     let mut end = vec.len() - 1;
 
